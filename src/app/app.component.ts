@@ -1,10 +1,12 @@
 ﻿import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from './models/user';
 
-import { AuthenticationService } from './_services';
-import { User } from './_models';
+import { AuthenticationService } from './services';
 
-@Component({ selector: 'app', templateUrl: 'app.component.html' })
+@Component({ selector: 'app',
+ templateUrl: 'app.component.html',
+ styleUrls: ['app.component.scss'], })
 export class AppComponent {
     currentUser: User;
 
@@ -13,10 +15,11 @@ export class AppComponent {
         private authenticationService: AuthenticationService
     ) {
         this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+       // console.log(this.currentUser,'curent')
     }
 
     logout() {
         this.authenticationService.logout();
-        this.router.navigate(['/login']);
+        this.router.navigate(['/auth/login']);
     }
 }

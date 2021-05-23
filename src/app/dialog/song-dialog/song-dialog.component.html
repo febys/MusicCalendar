@@ -1,0 +1,46 @@
+<mat-card class="example-card">
+  <mat-card-header class="header">
+    <!-- <div mat-card-avatar class="example-header-image"></div> -->
+    <mat-card-title *ngIf = "!song">Songs released on : {{songs[0].data.release_date}}</mat-card-title>
+    <mat-card-title *ngIf = "song">Song released on : {{songs.data.release_date}}</mat-card-title>
+    
+    <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+  </mat-card-header>
+  <mat-card-content>
+ <div class="list">
+  <ul *ngIf = "!song" >
+    <li *ngFor = "let song of songs">
+      <ul class="songsCard">
+      <li>
+     <span> Title: </span> {{song.data.title}}
+      </li>
+      <li>
+      <span>  Album: </span> {{song.data.album}}
+      </li>
+      <li>
+       <span> Artist: </span> {{song.data.artist}}
+      </li>
+    </ul>
+    </li>
+  </ul>
+  <ul *ngIf = "song">
+    <li >
+      <ul class="songsCard">
+      <li>
+     <span> Title: </span> {{songs.data.title}}
+      </li>
+      <li>
+      <span>  Album: </span> {{songs.data.album}}
+      </li>
+      <li>
+       <span> Artist: </span> {{songs.data.artist}}
+      </li>
+    </ul>
+    </li>
+  </ul>
+ </div>
+  </mat-card-content>
+  <mat-card-actions class="footer">
+    <button mat-button [mat-dialog-close]>Close</button>
+  </mat-card-actions>
+</mat-card>

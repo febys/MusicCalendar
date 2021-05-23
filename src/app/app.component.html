@@ -1,8 +1,26 @@
 ﻿<!-- nav -->
-<nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="currentUser">
-    <div class="navbar-nav">
-        <a class="nav-item nav-link" routerLink="/">Home</a>
-        <a class="nav-item nav-link" (click)="logout()">Logout</a>
+
+<nav class="navbar navbar-expand navbar-dark bg-dark"  *ngIf="currentUser">
+    <div class="navbar-nav" style="width: 100%;justify-content: space-between;">
+        <div class="logo">
+        <a class="nav-item nav-link" routerLink="/"><img src="favicon.ico" width="30px" height="30px" class = "mr-2">SongCal</a>
+       </div>
+        <div class="logout">
+         <button mat-button [matMenuTriggerFor]="menu">Hi,{{currentUser.firstName}}</button>
+        <mat-menu #menu="matMenu" yPosition="above">
+          <button mat-menu-item (click)="logout()">Logout</button>
+        </mat-menu>
+        <!-- (click)="logout()" -->
+        
+         <!-- <mat-form-field>
+        <mat-label>Hi,{{currentUser.firstName}}</mat-label>
+        <mat-select>
+          <mat-option (click)="logout()">
+           Logout
+          </mat-option>
+        </mat-select>
+    </mat-form-field> -->
+</div>
     </div>
 </nav>
 
@@ -11,12 +29,3 @@
     <router-outlet></router-outlet>
 </div>
 
-<!-- credits -->
-<div class="text-center mt-4">
-    <p>
-        <a href="https://jasonwatmore.com/post/2019/06/22/angular-8-jwt-authentication-example-tutorial" target="_top">Angular 8 - JWT Authentication Example & Tutorial</a>
-    </p>
-    <p>
-        <a href="http://jasonwatmore.com" target="_top">JasonWatmore.com</a>
-    </p>
-</div>

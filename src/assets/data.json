@@ -1,0 +1,34 @@
+[
+    {
+        "artist":[
+            "Avicii", "MishCatt"
+        ],
+        "title":"Fades Away",
+        "album":"Fades Away",
+        "release_date":"2021-05-23"
+    },
+    {
+        "artist":[
+            "Avicii"
+        ],
+        "title":"Heaven",
+        "album":"TIM",
+        "release_date":"2021-05-27"
+    },
+    {
+        "artist":[
+            "Armin van Buuren", "Nicky Romero", "Ifimay"
+        ],
+        "title":"I Need You to Know",
+        "album":"I Need You to Know",
+        "release_date":"2021-05-27"
+    },
+    {
+        "artist":[
+            "Armin van Buuren"
+        ],
+        "title":"Hollow",
+        "album":"holow",
+        "release_date":"2020-07-19"
+    }
+]

@@ -1,0 +1,35 @@
+#calendar {
+  display: flex;
+  .card-header {
+    display: flex;
+  }
+  .card-body {
+    height: calc(100vh - 160px);
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    .cal {
+      height: calc(100vh - 200px);
+    }
+    ::ng-deep .cal-month-view .cal-day-cell {
+      min-height: 59px;
+    }
+    ::ng-deep .cal-month-view .cal-cell-top {
+      min-height: 59px;
+    }
+    ::ng-deep .cal-month-view .cal-day-number {
+      margin-top: unset;
+      margin-right: 10%;
+    }
+    ::ng-deep .cal-month-view .cal-day-badge {
+      margin-top: unset;
+      min-width: 5px;
+    }
+    ::ng-deep .cal-month-view .cal-day {
+      min-height: calc(100vh - 87%);
+    }
+    ::ng-deep .cal-month-view .cal-day-cell.cal-today .cal-day-number {
+      font-size: 1.5em;
+    }
+  }
+}
