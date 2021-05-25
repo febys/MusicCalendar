@@ -20,3 +20,4 @@ If click to a day that hasn't any event or songs ,it will open
 a pop-up dialog when you can enter data to add a song to that day.
 
 If you have songs released on the day you login it will pop out a dialog with details of songs released on that date.
+**If you use zip without nodemodules you should modify library and to add to 'CalendarEvent' property 'data?' **
