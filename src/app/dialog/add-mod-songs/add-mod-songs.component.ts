@@ -25,8 +25,9 @@ export class AddModSongsComponent implements OnInit {
     // console.log(this.data)
     // if(this.data != undefined || this.data != ""){
     // this.items =this.data.event.data
-    
-    if(this.data.event != undefined ){
+   
+    if(this.data.event.data.length != 0 ){
+      console.log(this.data.event.data)
         this.items =this.data.event.data
     this.songform = this.formBuilder.group({
       artist: [this.items.artist, Validators.required],
@@ -37,11 +38,13 @@ export class AddModSongsComponent implements OnInit {
 }
 // }
 else{
+  let date = new Date(this.data.event.start)
+  console.log(date,'febys')
   this.songform = this.formBuilder.group({
     artist: ['', Validators.required],
     title: ['', Validators.required],
     album: ['', Validators.required],
-    release_date:['', Validators.required]
+    release_date:[date, Validators.required]
   });
 }
   }
@@ -51,17 +54,12 @@ else{
   onSubmit(){
     let data = this.songform.value
     let body = {
+      action: this.data.action,
       artist:data.artist,
       title: data.title,
       album:  data.album,
       release_date: new Date(data.release_date)
     }
-    this.ref.close({data:body})
-   // this.itemADD.emit(body)
-  //  let events : CalendarEvent[]
-  //  events.push({start:body.release_date,title:body.title,data:body})
-
-    
-    
+    this.ref.close({data:body})    
   }
 }

@@ -54,7 +54,7 @@ export class HomeComponent implements OnInit{
     loading = false;
     users: User[];
     @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
-  day: CalendarTodayDirective
+    day: CalendarTodayDirective
     view: CalendarView = CalendarView.Month;
   
     CalendarView = CalendarView;
@@ -77,58 +77,27 @@ export class HomeComponent implements OnInit{
         label: '<i class="fas fa-fw fa-trash-alt"></i>',
         a11yLabel: 'Delete',
         onClick: ({ event }: { event: CalendarEvent }): void => {
-          this.events = this.events.filter((iEvent) => iEvent !== event);
+          // this.events = this.events.filter((iEvent) => iEvent !== event);
           this.deleteEvent(event);
         },
       },
     ];
   
     refresh: Subject<any> = new Subject();
-  
+  //Events or Songs that will be shown as events 
     events: CalendarEvent[] = [
-      // {
-      //   start: subDays(startOfDay(new Date()), 1),
-      //   end: addDays(new Date(), 1),
-      //   title: 'A 3 day event',
-      //   color: colors.red,
-      //   actions: this.actions,
-      //   allDay: true,
-      //   resizable: {
-      //     beforeStart: true,
-      //     afterEnd: true,
-      //   },
-      //   draggable: true,
-      // },
+
       {
-        start: startOfDay(new Date()),
-        title: 'An event with no end date',
-        data: [{ artist:[
-          "TESTTTT"],
-      title:"Heaven",
-      album:"TIM",
-      release_date:'2021-05-24'}],
+        start: new Date(),
+        title: 'Test',
+        data: {artist:"TESTTTT",
+        title:"Test",
+        album:"TIM",
+        release_date:'2021-05-24'},
+        actions: this.actions,
         // actions: this.actions,
         // draggable: true,
       },
-      // {
-      //   start: subDays(endOfMonth(new Date()), 3),
-      //   end: addDays(endOfMonth(new Date()), 3),
-      //   title: 'A long event that spans 2 months',
-      //   color: colors.blue,
-      //   allDay: true,
-      // },
-      // {
-      //   start: addHours(startOfDay(new Date()), 2),
-      //   end: addHours(new Date(), 2),
-      //   title: 'A draggable and resizable event',
-      //   color: colors.yellow,
-      //   actions: this.actions,
-      //   resizable: {
-      //     beforeStart: true,
-      //     afterEnd: true,
-      //   },
-      //   draggable: true,
-      // },
     ];
     dayToday: Date = new Date();
     activeDayIsOpen: boolean = true;
@@ -138,17 +107,17 @@ export class HomeComponent implements OnInit{
       private songsService:SongsService,
       public dialog: MatDialog,
       private formBuilder: FormBuilder,) {
+        //Get Songs from service and push to event array
         this.songsService.getSongs().subscribe(res => {
           this.songs = res
           this.songs.forEach(element => {
-            console.log(element,'hjhg')
-            
               this.events =[
                 ...this.events,{
                 start: new Date(element.release_date),
                 title: element.title,
                 data: element,
                 actions: this.actions,
+                draggable: true,
               }
               ]
               //localStorage.setItem('ev',JSON.stringify(this.events))
@@ -157,23 +126,24 @@ export class HomeComponent implements OnInit{
         });
       }
   ngOnInit(){
+    if(this.events.length == 0){
+      this.activeDayIsOpen = false
+    }
     
-    this.viewDate = new Date();
+    //Pop-up dialog if there is a song releised today(now) search from 
+    //events to get the right event 
     for(let i = 0 ; i< this.events.length; i++){
-      
       let eventStart = (this.events[i].start).toString().substring(0, 15);
       let now = this.viewDate.toString().substring(0, 15);
-
       if(eventStart == now){
         this.today(this.viewDate,this.events[i])
       }
     }
-  //  this.refreshView()
   }
-
+//Open dialog if song relised is today
   today(date,events): void {
       // debugger
-      console.log(events)
+     
       if (isSameMonth(date, this.viewDate)) {
         if (
           (isSameDay(this.viewDate, date))  
@@ -182,20 +152,20 @@ export class HomeComponent implements OnInit{
         }
       }
     }
-  
+  //Day clicked ,if its today and click close expand else if click to 
+  //a calendar day that has no data open add dialog ,else if click to a 
+  //song relised calendar day open expand box
     dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
      
       if (isSameMonth(date, this.viewDate)) {
         if (
           (isSameDay(this.viewDate, date)) 
         ) {
-        console.log(events)
-      
        this.activeDayIsOpen = false;
         }
         else if (events.length == 0){
           this.activeDayIsOpen = false;
-          this.handleEvent('Add New',{start: startOfDay(new Date()),
+          this.handleEvent('Add New',{start: date,
                   title: '',
                   data: [],} );
         }
@@ -207,45 +177,60 @@ export class HomeComponent implements OnInit{
         this.viewDate = date;
       }
     }
-  
+  //Change day of released if u drang and drop a date
     eventTimesChanged({
       event,
       newStart,
       newEnd,
     }: CalendarEventTimesChangedEvent): void {
       this.events = this.events.map((iEvent) => {
+        console.log(event)
         if (iEvent === event) {
+        
           return {
             ...event,
             start: newStart,
             end: newEnd,
           };
         }
+       
         return iEvent;
       });
-      this.handleEvent('Dropped or resized', event);
-    }
-  openDialog(data){
  
+      // this.handleEvent('Dropped or resized', event);
+      if(this.events.length == 0){
+        this.activeDayIsOpen = false
+      }
+    }
+    //Open song/songs detail dialog 
+  openDialog(data){
     this.dialog.open(SongDialogComponent, {
       width: '750px',
       // min-height: '650px',
       data: data
     });
   }
+  //Open song add or modify dialog and gets back the data that have been added or 
+  //modified and add those data to addEvent that create a new song
     handleEvent(action: string, event: CalendarEvent<any>): void {
       this.modalData = { event, action };
       this.dialog.open(AddModSongsComponent, {
         width: '450px',
         data: this.modalData
       }).afterClosed().subscribe(res => {
-        console.log(res)
-        this.addEvent(res);
+        console.log(res);
+        if(res.data.action == "Edited"){
+          console.log('hyri ketu')
+          this.editSong(res);
+        }
+        else{
+        this.addEvent(res);}
       });
      // this.modal.open(this.modalContent, { size: 'lg' });
     }
-  
+  //Create a new song /event (add to array of events)
     addEvent(res): void {
+      if(res != undefined){
       this.events = [
         ...this.events,
         {
@@ -255,22 +240,47 @@ export class HomeComponent implements OnInit{
           data:res.data
         },
       ];
+      }
     }
-  
+    editSong(res):void {
+let body:CalendarEvent ={
+  start: new Date(),
+  title: '',
+  data: {artist:"",
+  title:"",
+  album:"",
+  release_date:''},
+  actions: this.actions,
+}
+      this.events = this.events.map((iEvent) => {
+      //  console.log(event)
+        if (iEvent === body) {
+        
+          return {
+            ...body,
+            title: res.data.title,
+            start: new Date(res.data.release_date),
+            draggable: true,
+            actions:this.actions,
+            data:res.data
+          };
+        }
+       
+        return iEvent;
+      });
+    }
+  //Delete event
     deleteEvent(eventToDelete: CalendarEvent) {
+    
       this.events = this.events.filter((event) => event !== eventToDelete);
     }
   
     setView(view: CalendarView) {
       this.view = view;
     }
-    // refreshView(){
-    //   console.log('hynnn')
-    //  return this.day.viewDate = this.viewDate
-    // }
+
   
     closeOpenMonthViewDay() {
       this.activeDayIsOpen = false;
     }
   }
-  

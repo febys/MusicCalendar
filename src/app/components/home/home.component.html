@@ -1,10 +1,11 @@
-﻿<div id="calendar" class="card mt-4">
+﻿ <div id="calendar" class="card mt-4">
     <h4 class="card-header">Song Calendar</h4>
     <div class="card-body">
       <div class="cal">
         <div class="row text-center">
             <div class="col-md-4">
               <div class="btn-group">
+                <!-- Previous -->
                 <div
                   class="btn btn-primary"
                   mwlCalendarPreviousView
@@ -14,6 +15,7 @@
                 >
                   Previous
                 </div>
+                <!-- today -->
                 <div
                   class="btn btn-outline-secondary"
                   mwlCalendarToday
@@ -21,6 +23,7 @@
                 >
                   Today
                 </div>
+                <!-- Next -->
                 <div
                   class="btn btn-primary"
                   mwlCalendarNextView
@@ -37,12 +40,14 @@
             </div>
             <div class="col-md-4">
               <div class="btn-group">
+                <!-- MonthviewButton -->
                 <div
                   class="btn btn-primary"
                   (click)="setView(CalendarView.Month)"
                   [class.active]="view === CalendarView.Month"
                 >
-                  Month
+                Month
+                  <!-- WeekViewButton -->
                 </div>
                 <div
                   class="btn btn-primary"
@@ -51,18 +56,12 @@
                 >
                   Week
                 </div>
-                <!-- <div
-                  class="btn btn-primary"
-                  (click)="setView(CalendarView.Day)"
-                  [class.active]="view === CalendarView.Day"
-                >
-                  Day
-                </div> -->
               </div>
             </div>
           </div>
           <br />
           <div [ngSwitch]="view">
+            <!-- Monthview -->
             <mwl-calendar-month-view
               *ngSwitchCase="CalendarView.Month"
               [viewDate]="viewDate"
@@ -74,6 +73,7 @@
               (eventTimesChanged)="eventTimesChanged($event)"
             >
             </mwl-calendar-month-view>
+            <!-- WeekView -->
              <mwl-calendar-week-view
               *ngSwitchCase="CalendarView.Week"
               [viewDate]="viewDate"
@@ -83,100 +83,11 @@
               (eventTimesChanged)="eventTimesChanged($event)"
             >
           </mwl-calendar-week-view>
-            <!-- <mwl-calendar-day-view
-              *ngSwitchCase="CalendarView.Day"
-              [viewDate]="viewDate"
-              [events]="events"
-              [refresh]="refresh"
-              (eventClicked)="handleEvent('Clicked', $event.event)"
-              (eventTimesChanged)="eventTimesChanged($event)"
-            >
-            </mwl-calendar-day-view> -->
           </div>
           
           
-          <!-- <h3>
-            Edit events
-            <button class="btn btn-primary float-right" (click)="addEvent()">
-              Add new
-            </button>
-            <div class="clearfix"></div>
-          </h3>
-          
-          <div class="table-responsive">
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Primary color</th>
-                  <th>Secondary color</th>
-                  <th>Starts at</th>
-                  <th>Ends at</th>
-                  <th>Remove</th>
-                </tr>
-              </thead>
-          
-              <tbody>
-                <tr *ngFor="let event of events">
-                  <td>
-                    <input
-                      type="text"
-                      class="form-control"
-                      [(ngModel)]="event.title"
-                      (keyup)="refresh.next()"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="color"
-                      [(ngModel)]="event.color.primary"
-                      (change)="refresh.next()"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="color"
-                      [(ngModel)]="event.color.secondary"
-                      (change)="refresh.next()"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      class="form-control"
-                      type="text"
-                      mwlFlatpickr
-                      [(ngModel)]="event.start"
-                      (ngModelChange)="refresh.next()"
-                      
-                      dateFormat="Y-m-dTH:i"
-                      altFormat="F j, Y H:i"
-                      placeholder="Not set"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      class="form-control"
-                      type="text"
-                      mwlFlatpickr
-                      [(ngModel)]="event.end"
-                      (ngModelChange)="refresh.next()"
-                   
-                      dateFormat="Y-m-dTH:i"
-                      altFormat="F j, Y H:i"
-                      placeholder="Not set"
-                    />
-                  </td>
-                  <td>
-                    <button class="btn btn-danger" (click)="deleteEvent(event)">
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          -->
-          <ng-template #modalContent let-close="close">
+   
+          <!-- <ng-template #modalContent let-close="close">
             <div class="modal-header">
               <h5 class="modal-title">Event action occurred</h5>
               <button type="button" class="close" (click)="close()">
@@ -198,7 +109,7 @@
                 OK
               </button>
             </div>
-          </ng-template> 
+          </ng-template>  -->
         </div>
     
 </div>

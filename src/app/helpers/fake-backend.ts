@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS, HttpHeaders } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 import { User } from '@app/models/user';
@@ -12,6 +12,14 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const { url, method, headers, body } = request;
 
+      function  getApiHeaders(): HttpHeaders {
+            return new HttpHeaders({
+              'Authorization': 'Bearer ' + '0123456789',
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Music-User-Token': '12421435'
+            });
+          }
         // wrap in delayed observable to simulate server api call
         return of(null)
             .pipe(mergeMap(handleRoute))
@@ -19,11 +27,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             .pipe(delay(500))
             .pipe(dematerialize());
 
+          
         function handleRoute() {
             switch (true) {
                 case url.endsWith('/users/authenticate') && method === 'POST':
                     return authenticate();
-                case url.endsWith('/users') && method === 'GET':
+                case url.endsWith('/songs') && method === 'GET':
                     return getUsers();
                 default:
                     // pass through any requests not handled above
@@ -32,7 +41,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         // route functions
-
+       
+        
         function authenticate() {
             const { username, password } = body;
             const user = users.find(x => x.username === username && x.password === password);

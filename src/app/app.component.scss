@@ -7,7 +7,7 @@
   button:focus {
     outline: unset !important;
   }
-}
-:ng-deep .mat-menu-panel {
-  min-height: 44px;
+  .mat-menu-panel {
+    min-height: 44px;
+  }
 }

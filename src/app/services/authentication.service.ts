@@ -10,7 +10,7 @@ import { User } from '@app/models/user';
 export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
-
+    TOKEN_NAME:string
     constructor(private http: HttpClient) {
         this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
         this.currentUser = this.currentUserSubject.asObservable();
@@ -19,7 +19,12 @@ export class AuthenticationService {
     public get currentUserValue(): User {
         return this.currentUserSubject.value;
     }
-
+    getToken(): string {
+        return localStorage.getItem(this.TOKEN_NAME);
+    }
+    setToken(token: string): void {
+        localStorage.setItem(this.TOKEN_NAME, token);
+    }
     login(username: string, password: string) {
         return this.http.post<any>(`${environment.apiUrl}/users/authenticate`, { username, password })
             .pipe(map(user => {

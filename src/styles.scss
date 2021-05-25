@@ -10,7 +10,15 @@ body {
   margin: 0;
   overflow: hidden;
 }
-
+.mat-menu-panel {
+  min-height: 44px !important;
+}
 .mat-menu-content {
   padding: 0 !important;
+}
+.mat-dialog-container {
+  background-image: url(assets/Wall2.jpg);
+}
+.bg-dark {
+  background-color: #0062cc !important;
 }
